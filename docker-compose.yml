@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  db:
+    image: postgres
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: library
+
+  client:
+    build: 
+      context: https://github.com/bry-git/SDI-library-client.git#main
+    environment:
+      REACT_APP_MOCKAPIMODE: production
+      REACT_APP_APIURL: http://localhost:3030   
+    depends_on: 
+      - db
+    ports:
+      - 3000:3000
+    
+  server: 
+    build: 
+      context: https://github.com/bry-git/SDI-library-backend.git#main
+    depends_on:
+      - db
+    ports:
+      - 3030:3030
